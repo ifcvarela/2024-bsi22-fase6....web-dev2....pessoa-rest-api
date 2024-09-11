@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Usuários</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <h1>Cadastro de Usuários</h1>
+  <main>
+    <form>
+      <div class="input-container">
+        <label for="name">Nome</label>
+        <input type="text" name="name">
+      </div>
+      <div class="input-container">
+        <label for="email">E-mail</label>
+        <input type="email" name="email">
+      </div>
+      <div class="actions-container">
+        <button data-action="delete">Excluir</button>
+        <button data-action="update">Alterar</button>
+        <button data-action="create">Cadastrar</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
