@@ -7,7 +7,7 @@ export async function connect() {
   if (instance) return instance
 
   const db = await open({
-     filename: './src/database.sqlite',
+     filename: 'database.sqlite',
      driver: sqlite3.Database
    })
   
