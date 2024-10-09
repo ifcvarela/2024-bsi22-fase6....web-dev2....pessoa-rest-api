@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { refreshToken } from "../middlewares/token"
+import { refreshToken, verifyToken, createToken } from "../middlewares/token"
 const router = Router()
 router.post('/', createToken)
 router.post('/verify', verifyToken)
