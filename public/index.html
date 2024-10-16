@@ -1,30 +1,44 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Usuários</title>
-  <link rel="stylesheet" href="main.css">
-  <script src="main.js" defer></script>
+  <title>Document</title>
 </head>
+
 <body>
-  <h1>Cadastro de Usuários</h1>
-  <main>
-    <form>
-      <div class="input-container">
-        <label for="name">Nome</label>
-        <input type="text" name="name">
-      </div>
-      <div class="input-container">
-        <label for="email">E-mail</label>
-        <input type="email" name="email">
-      </div>
-      <div class="actions-container">
-        <button data-action="delete">Excluir</button>
-        <button data-action="update">Alterar</button>
-        <button data-action="create">Cadastrar</button>
-      </div>
-    </form>
-  </main>
+  <h1>Login</h1>
+  <form>
+    <input placeholder="Email" type="email" name="email" value="susan@mail.com">
+    <input placeholder="Senha" type="password" name="password" value="123123">
+    <button type="submit">Entrar</button>
+  </form>
+  <script>
+    const form = document.querySelector('form')
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      
+      const response = await fetch('/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email.value,
+          password: form.password.value
+        })
+      })
+
+      const resposeData = await response.json()
+
+      if (!response.ok) {
+        alert("o servidor nos disse: " + resposeData.message)
+        return
+      }
+
+      localStorage.setItem('token', resposeData.token)
+      location.href = '/home.html'
+    })
+  </script>
 </body>
+
 </html>
