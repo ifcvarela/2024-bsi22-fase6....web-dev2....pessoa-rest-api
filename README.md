@@ -30,5 +30,5 @@ Utilizand como base a aplição feita em sala de aula, faça:
   login-error                         --> |volta para outra tentativa|login
   login-ok                            --> |usuário logado|home[cliente: tela principal]
   home                                --> |usa o TOKEN para solictar dados|request-data(cliente: envia para o servidor requisição de dados)
-
+  request-data                        --> server-check-token(...)
 ```
