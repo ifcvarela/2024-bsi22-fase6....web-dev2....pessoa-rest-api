@@ -9,8 +9,8 @@ const getManyUsers: RequestHandler = async (req, res) => {
 
 const createUser: RequestHandler = async (req, res) => {
   const db = await connect()
-  const { name, email } = req.body
-  const result = await db.run('INSERT INTO users (name, email) VALUES (?, ?)', [name, email])
+  const { name, email, password } = req.body
+  const result = await db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password])
   const user = await db.get('SELECT id, name, email FROM users WHERE id = ?', [result.lastID])
   res.json(user)
 }
