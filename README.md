@@ -32,3 +32,81 @@ Utilizand como base a aplição feita em sala de aula, faça:
   home                                --> |usa o TOKEN para solictar dados|request-data(cliente: envia para o servidor requisição de dados)
   request-data                        --> server-check-token(...)
 ```
+
+# Graph
+
+```mermaid
+graph LR
+
+subgraph Servidor
+  servidor_verifica-validade-do-token
+  servidor_decisão-validade-do-token{token <br>valido?}
+  servidor_verifica-dados-de-acesso
+  servitor_decisão-dados-de-acesso{dados <br>validos?}
+  servidor_mensagem-de-token-invalido
+  servidor_gera-novo-token
+  servidor_mensagem-de-dados-de-acesso-invalidos
+end
+
+subgraph Usuário
+  usuario_acesso-inicial-na-aplicacao((acesso inicial <br>na aplicação))
+  usuario_preenche-dados-de-acesso[/preenche dados de acesso/]
+end
+
+subgraph Cliente
+  cliente_verifica-exsitencia-de-token-pregresso
+  cliente_decisão-exsitencia-de-token-pregresso{token <br>existe?}
+  cliente_envia-token-para-verificacao-do-servidor
+  cliente_mensagem-de-dados-de-acesso-invalidos
+  cliente_redireciona-para-login
+  cliente_decisão-tipo-de-login{tipo de login}
+  cliente_login-por-form-local
+  cliente_login-por-oauth
+  cliente_login-novo-cadastro
+  cliente_valida-dados-de-acesso
+  cliente_decisão-validade-dos-dados{dados <br>validos?}
+  cliente_envia-dados-de-acesso-para-o-servidor
+  cliente_redireciona-para-home(((redireciona <br>para home)))
+end
+
+Usuário ~~~ Cliente ~~~ Servidor
+
+usuario_acesso-inicial-na-aplicacao 
+  --> cliente_verifica-exsitencia-de-token-pregresso 
+  --> cliente_decisão-exsitencia-de-token-pregresso
+  -- sim --> cliente_envia-token-para-verificacao-do-servidor
+          --> servidor_verifica-validade-do-token
+          --> servidor_decisão-validade-do-token
+          -- sim --> cliente_redireciona-para-home;
+
+cliente_decisão-exsitencia-de-token-pregresso
+  -- não --> cliente_redireciona-para-login
+           --> cliente_decisão-tipo-de-login
+           --> cliente_login-por-form-local
+           --> usuario_preenche-dados-de-acesso
+           --> cliente_valida-dados-de-acesso
+           --> cliente_decisão-validade-dos-dados
+           -- sim --> cliente_envia-dados-de-acesso-para-o-servidor
+                  --> servidor_verifica-dados-de-acesso
+                  --> servitor_decisão-dados-de-acesso
+                  -- sim --> servidor_gera-novo-token
+                         --> cliente_redireciona-para-home;
+                      
+cliente_decisão-tipo-de-login
+  --> cliente_login-por-oauth;
+
+cliente_decisão-tipo-de-login
+  --> cliente_login-novo-cadastro;
+
+cliente_decisão-validade-dos-dados
+  -- não --> cliente_mensagem-de-dados-de-acesso-invalidos
+         --> cliente_redireciona-para-login;
+
+servitor_decisão-dados-de-acesso
+  -- não --> servidor_mensagem-de-dados-de-acesso-invalidos
+         --> cliente_mensagem-de-dados-de-acesso-invalidos;
+
+servidor_decisão-validade-do-token
+  -- não --> servidor_mensagem-de-token-invalido
+         --> cliente_redireciona-para-login;
+```
