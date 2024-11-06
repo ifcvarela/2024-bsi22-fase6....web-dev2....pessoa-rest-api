@@ -30,7 +30,9 @@ export const verifyToken: RequestHandler = async (req, res, next) => {
   const token = req.headers.authorization
 
   try {
-    await verify(token)
+    const data = await verify(token)
+    // @ts-ignore
+    req["jwt"] = data
     next()
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError)
